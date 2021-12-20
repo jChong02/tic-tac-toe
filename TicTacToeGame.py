@@ -54,7 +54,6 @@ class TicTacToeGame:
     
     def checkCols(self):
         if self.board[0] == self.board[3] == self.board[6] != "":
-            print(self.board[0])
             return self.board[0]
         if self.board[1] == self.board[4] == self.board[7] != "":
             return self.board[1]

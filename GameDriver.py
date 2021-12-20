@@ -3,7 +3,8 @@ from TicTacToeGame import TicTacToeGame
 from functools import partial
 
 board = TicTacToeGame()
-turn = "X"  
+turn = "X"
+gameEnd = False
 
 window = tk.Tk()
 window.grid_columnconfigure(0, weight=1)
@@ -23,6 +24,10 @@ def refreshBoard():
     for i in range(3):
         for j in range(3):
             label = tk.Label(master=frm_board, height=5, width=10 ,text=board.getMark(pos), relief=tk.SOLID)
+            if board.getMark(pos) == "X":
+                label.config(fg= "Red")
+            if board.getMark(pos) == "O":
+                label.config(fg= "Blue")
             label.grid(row=i, column=j)
             placeMarker = partial(placeMarkerWithPos, pos)
             label.bind('<Button-1>', placeMarker)
@@ -34,34 +39,38 @@ def refreshBoard():
 
 
 def placeMarkerWithPos(pos, event):
-    global turn
+    global turn, gameEnd
     lbl_error = tk.Label(master=frm_turn, text="You cannot place a marker there!", fg="Red")    
                
-    if board.getMark(pos) != "" and board.getMoves < 9:
+    if board.getMark(pos) != "" and not gameEnd:
         lbl_error.grid(row=1)
         lbl_error.after(500 , lambda: lbl_error.destroy())
     if turn == "X" and board.getMark(pos) == "" and board.getWinner() == "":
-        print(pos)
         board.placeX(pos)
         refreshBoard()
         turn = "O"
     if turn == "O" and board.getMark(pos) == "" and board.getWinner() == "":
-        print(pos)
         board.placeO(pos)
         refreshBoard()
         turn = "X"
     if board.getMoves() > 4:
         board.checkWin()
         if board.getWinner() != "":
+            gameEnd = True
             lbl_turn.destroy()
             frm_winner = tk.Frame(master=window)
-            lbl_winner = tk.Label(master=frm_winner, text="Winner is " + board.getWinner())
+            lbl_winner = tk.Label(master=frm_winner, text="Winner is " + board.getWinner() + "!")
+            if board.getWinner() == "X":
+                lbl_winner.config(fg="Red")
+            else:
+                lbl_winner.config(fg="Blue")
             lbl_winner.grid()
             frm_winner.grid()
         if board.getMoves() == 9 and board.getWinner() == "":
+            gameEnd = True
             lbl_turn.destroy()
             frm_winner = tk.Frame(master=window)
-            lbl_winner = tk.Label(master=frm_winner, text="Noone wins")
+            lbl_winner = tk.Label(master=frm_winner, text="It's a draw!")
             lbl_winner.grid()
             frm_winner.grid()    
      
