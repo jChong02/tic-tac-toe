@@ -44,22 +44,16 @@ class TicTacToeGame:
         return
             
     def checkRows(self):
-        if self.board[0] == self.board[1] == self.board[2] != "":
-            return self.board[0]
-        if self.board[3] == self.board[4] == self.board[5] != "":
-            return self.board[3]
-        if self.board[6] == self.board[7] == self.board[8] != "":
-            return self.board[6]        
+        for i in range(3):
+            if self.board[i*3] == self.board[(i*3)+1] == self.board[(i*3)+2] != "":
+                return self.board[i*3]
         return ""
     
     def checkCols(self):
-        if self.board[0] == self.board[3] == self.board[6] != "":
-            return self.board[0]
-        if self.board[1] == self.board[4] == self.board[7] != "":
-            return self.board[1]
-        if self.board[2] == self.board[5] == self.board[8] != "":
-            return self.board[2]        
-        return ""    
+        for i in range(3):
+            if self.board[i] == self.board[i+3] == self.board[i+6] != "":
+                return self.board[i]
+        return ""
     
     def checkDiagonals(self):
         if self.board[0] == self.board[4] == self.board[8] != "":
